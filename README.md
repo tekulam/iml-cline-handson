@@ -21,7 +21,7 @@ venv\Scripts\activate
 
 ### Install requirements from requirements.txt:
 ```bash
-pip install -r practice/requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Verify installation:
@@ -36,39 +36,83 @@ deactivate
 
 ## API Configuration
 
-### Add Groq API key
-You can fetch the groq api key from here: https://console.groq.com/keys
+This project uses a `.env` file to manage API keys and configuration settings. Follow these steps to set up your environment:
 
-#### On macOS/Linux:
-1) Temporary (Current Terminal Session Only)
+1. Copy the example environment file to create your own:
    ```bash
-   export GROQ_API_KEY="your-api-key-here"
-   ```
-   This will only last for your current terminal session. Once you close the terminal, you'll need to set it again.
-
-2) Semi-Permanent (For Your Current Shell)
-   a) Add it to your shell profile file:
-      For Zsh:
-      ```bash
-      echo 'export GROQ_API_KEY="your-api-key-here"' >> ~/.zshrc
-      ```
-
-   b) Then reload your profile:
-      ```bash
-      source ~/.zshrc
-      ```
-
-#### On Windows:
-1) Temporary (Current Command Prompt Session Only)
-   ```cmd
-   set GROQ_API_KEY=your-api-key-here
+   cp .env.example .env
    ```
 
-2) Permanent (System-wide)
-   ```cmd
-   setx GROQ_API_KEY "your-api-key-here"
+2. Edit the `.env` file with your preferred text editor:
+   ```bash
+   nano .env  # or use any editor you prefer
    ```
-   Note: You'll need to restart your command prompt for this to take effect.
+
+3. Update the following settings in your `.env` file:
+
+### Groq API Configuration
+```
+# Get your API key from https://console.groq.com/keys
+GROQ_API_KEY=your_groq_api_key_here
+```
+
+### AWS Bedrock Configuration
+```
+# AWS credentials with Bedrock access permissions
+AWS_ACCESS_KEY_ID=your_aws_access_key_id_here
+AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key_here
+AWS_SESSION_TOKEN=your_aws_session_token_here  # if using temporary credentials
+AWS_REGION=us-west-2  # or your preferred region where Bedrock is available
+
+# Bedrock model settings
+BEDROCK_MODEL_ID=anthropic.claude-v2  # Default model ID
+BEDROCK_MODEL_KWARGS={"temperature": 0.7, "max_tokens_to_sample": 500}
+```
+
+#### Getting AWS Credentials with Ada
+
+If you're using the Ada CLI tool, you can easily get your AWS credentials with the following command:
+
+```bash
+ada credentials update --account=<accountId> --provider=conduit --role=IibsAdminAccess-DO-NOT-DELETE --once
+ada credentials print --account=<accountId> --provider=conduit --role=IibsAdminAccess-DO-NOT-DELETE 
+```
+
+This will output your credentials in JSON format:
+
+```json
+{
+  "Version": 1,
+  "AccessKeyId": "ASIAXXXXXXXXXXXXXXX",
+  "SecretAccessKey": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "SessionToken": "xxxxxxxx...",
+  "Expiration": "2025-07-22T22:14:28Z"
+}
+```
+
+You can then copy these values to your `.env` file:
+- `AccessKeyId` → `AWS_ACCESS_KEY_ID`
+- `SecretAccessKey` → `AWS_SECRET_ACCESS_KEY`
+- `SessionToken` → `AWS_SESSION_TOKEN`
+
+Note that these credentials are temporary and will expire at the time shown in the `Expiration` field. You'll need to refresh them periodically.
+
+### Model Selection
+```
+# Choose which LLM provider to use
+LLM_PICKER=bedrock  # Options: ollama, groq, bedrock
+```
+
+### Available Bedrock Models
+
+When using AWS Bedrock, you can choose from these models by updating the `BEDROCK_MODEL_ID` in your `.env` file:
+
+- `anthropic.claude-v2` - Anthropic's Claude v2
+- `anthropic.claude-v2:1` - Claude v2.1
+- `anthropic.claude-instant-v1` - Claude Instant
+- `amazon.titan-text-express-v1` - Amazon Titan Text
+- `ai21.j2-ultra-v1` - AI21 Jurassic-2 Ultra
+- `cohere.command-text-v14` - Cohere Command
 
 ## Installing and Running Ollama
 
@@ -88,7 +132,7 @@ This will start the Ollama server in the foreground. You can open a new terminal
 
 #### Pull a model:
 ```bash
-ollama pull llama3
+ollama pull gemma:2b
 ```
 Replace llama3 with any model you want to use. Some popular options:
 
@@ -101,7 +145,7 @@ Replace llama3 with any model you want to use. Some popular options:
 
 #### Run a model:
 ```bash
-ollama run llama3
+ollama run gemma:2b
 ```
 This will start an interactive chat session with the model.
 
@@ -120,12 +164,12 @@ ollama serve
 
 #### Pull a model:
 ```cmd
-ollama pull llama3
+ollama pull gemma:2b
 ```
 
 #### Run a model:
 ```cmd
-ollama run llama3
+ollama run gemma:2b
 ```
 
 #### Use Ollama API:
