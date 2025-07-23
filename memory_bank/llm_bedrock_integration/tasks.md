@@ -43,9 +43,3 @@
     - Document the Bedrock client setup
     - Add usage examples in comments
     - _Requirements: 3.2_
-
-- [ ] 7. Write tests for Bedrock integration
-  - Create unit tests for provider selection
-  - Implement integration tests for Bedrock client
-  - Add configuration tests for environment variables
-  - _Requirements: 1.1, 1.2, 1.3, 1.4_
