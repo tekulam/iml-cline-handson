@@ -114,7 +114,7 @@ When using AWS Bedrock, you can choose from these models by updating the `BEDROC
 - `ai21.j2-ultra-v1` - AI21 Jurassic-2 Ultra
 - `cohere.command-text-v14` - Cohere Command
 
-## Installing and Running Ollama
+## Installing and Running hello_llm.py with Ollama
 
 ### On macOS
 #### Install Ollama
@@ -143,15 +143,6 @@ Replace llama3 with any model you want to use. Some popular options:
 - gemma:2b (Google's Gemma 2B)
 - gemma:7b
 
-#### Run a model:
-```bash
-ollama run gemma:2b
-```
-This will start an interactive chat session with the model.
-
-#### Use Ollama API: 
-Ollama also provides a local API endpoint at http://localhost:11434 that you can use in your Python code.
-
 ### On Windows
 #### Install Ollama
 Download and install Ollama for Windows from the official website: https://ollama.com/download
@@ -167,13 +158,13 @@ ollama serve
 ollama pull gemma:2b
 ```
 
-#### Run a model:
-```cmd
-ollama run gemma:2b
-```
+## Generating new code and Running hello_llm.py with Bedrock
 
-#### Use Ollama API:
-Just like on macOS, Ollama provides a local API endpoint at http://localhost:11434 that you can use in your Python code.
+### Using Cline/Kiro/Cursor or any augmented AI tool
+Run the following prompt
+```bash
+Refer to the requirements, design & tasks in the memory_bank folder and update hello_llm.py code to include bedrock integration. Ensure the bedrock calls are made using the AWS credentials(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,AWS_SESSION_TOKEN) stored in .env file.
+```
 
 ## Troubleshooting
 
